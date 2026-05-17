@@ -23,4 +23,5 @@ rootProject.name = "KotliteDemo"
 
 include(":kotlite-interpreter")
 include(":kotlite-stdlib")
+include(":kotlite-stdlib-processor-gradle-plugin")
 include(":app")

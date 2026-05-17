@@ -1,9 +1,8 @@
 import com.sunnychung.gradle.plugin.kotlite.codegenerator.KotliteModuleConfig
-import com.sunnychung.lib.multiplatform.kotlite.stdlib.processor.GenerateLibModulesTask
 
 plugins {
     kotlin("multiplatform")
-    id("io.github.sunny-chung.kotlite-stdlib-processor-plugin") version "1.0.0"
+    id("io.github.sunny-chung.kotlite-stdlib-processor-plugin")
 }
 
 kotlin {
@@ -17,7 +16,6 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             kotlin.srcDir("build/generated/common")
-            kotlin.srcDir("build/generated/concrete")
             dependencies {
                 implementation("co.touchlab:kermit:1.0.0")
                 implementation("io.github.sunny-chung:kdatetime-multiplatform:1.0.0")
@@ -28,16 +26,8 @@ kotlin {
     }
 }
 
-val generateLibModules = tasks.register<GenerateLibModulesTask>("generateLibModules") {
-    abstractModuleDir.set(file("build/generated/common"))
-    concreteModuleOutputDir.set(file("build/generated/concrete"))
-    outputPackage.set("com.sunnychung.lib.multiplatform.kotlite.stdlib")
-    
-    dependsOn("kotliteStdlibHeaderProcess")
-}
-
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    dependsOn(generateLibModules)
+    dependsOn("kotliteStdlibHeaderProcess")
 }
 
 kotliteStdLibHeaderProcessor {
