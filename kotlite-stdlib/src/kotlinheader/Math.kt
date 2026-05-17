@@ -1,3 +1,4 @@
+val PI: Double get()
 val Double.absoluteValue: Double get()
 val Int.absoluteValue: Int get()
 val Long.absoluteValue: Long get()
