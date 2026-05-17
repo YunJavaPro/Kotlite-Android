@@ -23,5 +23,3 @@ fun require(value: Boolean)
 fun require(value: Boolean, lazyMessage: () -> Any)
 nullaware fun <T : Any> requireNotNull(value: T?): T
 nullaware fun <T : Any> requireNotNull(value: T?, lazyMessage: () -> Any): T
-
-fun <T> arrayOf(vararg elements: T): Array<T>

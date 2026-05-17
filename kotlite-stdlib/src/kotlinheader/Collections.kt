@@ -6,6 +6,7 @@ val <T> List<T>.size: Int
 val <T> List<T>.lastIndex: Int
     get()
 
+fun <T> arrayOf(vararg elements: T): Array<T>
 fun <T> listOf(vararg elements: T): List<T>
 fun <T> mutableListOf(vararg elements: T): MutableList<T>
 //fun <T> emptyList(): List<T>
