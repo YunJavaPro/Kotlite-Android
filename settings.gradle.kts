@@ -3,6 +3,9 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven("https://maven.aliyun.com/repository/google")
+        maven("https://maven.aliyun.com/repository/central")
+        maven("https://mirrors.tuna.tsinghua.edu.cn/maven2")
     }
 }
 
@@ -23,5 +26,4 @@ rootProject.name = "KotliteDemo"
 
 include(":kotlite-interpreter")
 include(":kotlite-stdlib")
-include(":kotlite-stdlib-processor-gradle-plugin")
 include(":app")
