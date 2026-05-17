@@ -61,19 +61,6 @@ abstract class GenerateConcreteModulesTask : DefaultTask() {
             it.nameWithoutExtension.removePrefix("Abstract").removeSuffix("LibModule")
         }
 
-        // Generate concrete modules (XxxLibModule)
-        moduleNames.forEach { name ->
-            val content = """
-/** Generated code. DO NOT MODIFY! Changes to this file will be overwritten. **/
-package ${outputPackage.get()}
-
-class ${name}LibModule : Abstract${name}LibModule()
-            """.trimIndent()
-
-            File(concreteDir, "${name}LibModule.kt").writeText(content)
-            println("✓ Generated ${outputPackage.get()}.${name}LibModule")
-        }
-
         // Generate StdLibModuleRegistry
         val registryContent = """
 /** Generated code. DO NOT MODIFY! Changes to this file will be overwritten. **/
