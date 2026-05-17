@@ -183,9 +183,9 @@ fun <T, R : Comparable<R>> Iterable<T>.sortedBy(selector: (T) -> R?): List<T>
 fun <T, R : Comparable<R>> Iterable<T>.sortedByDescending(selector: (T) -> R?): List<T>
 fun <T : Comparable<T>> Iterable<T>.sortedDescending(): List<T>
 fun <T> List<T>.subList(fromIndex: Int, toIndex: Int): List<T>
-//fun <T> List<Int>.sum(): Int
-//fun <T> List<Long>.sum(): Long
-//fun <T> List<Double>.sum(): Double
+fun List<Int>.sum(): Int
+fun List<Long>.sum(): Long
+fun List<Double>.sum(): Double
 fun <T> Iterable<T>.take(n: Int): List<T>
 fun <T> List<T>.takeLast(n: Int): List<T>
 fun <T> List<T>.takeLastWhile(predicate: (T) -> Boolean): List<T>

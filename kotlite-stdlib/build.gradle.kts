@@ -1,4 +1,11 @@
 import com.sunnychung.gradle.plugin.kotlite.codegenerator.KotliteModuleConfig
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.TaskAction
+import java.io.File
 
 plugins {
     kotlin("multiplatform")
@@ -16,6 +23,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             kotlin.srcDir("build/generated/common")
+            kotlin.srcDir("build/generated/concrete")
             dependencies {
                 implementation("co.touchlab:kermit:1.0.0")
                 implementation("io.github.sunny-chung:kdatetime-multiplatform:1.0.0")
@@ -24,6 +32,69 @@ kotlin {
             }
         }
     }
+}
+
+abstract class GenerateConcreteModulesTask : DefaultTask() {
+    @get:InputDirectory
+    abstract val abstractModuleDir: DirectoryProperty
+
+    @get:OutputDirectory
+    abstract val concreteModuleOutputDir: DirectoryProperty
+
+    @get:org.gradle.api.tasks.Input
+    abstract val outputPackage: Property<String>
+
+    @TaskAction
+    fun generate() {
+        val abstractDir = abstractModuleDir.asFile.get()
+        val concreteDir = concreteModuleOutputDir.asFile.get()
+
+        concreteDir.mkdirs()
+
+        // Find all AbstractXxxLibModule.kt files
+        val abstractFiles = abstractDir.listFiles()
+            ?.filter { it.name.startsWith("Abstract") && it.name.endsWith("LibModule.kt") }
+            ?: emptyList()
+
+        // Extract module names (remove "Abstract" prefix and "LibModule.kt" suffix)
+        val moduleNames = abstractFiles.map { 
+            it.nameWithoutExtension.removePrefix("Abstract").removeSuffix("LibModule")
+        }
+
+        // Generate StdLibModuleRegistry
+        val registryContent = """
+/** Generated code. DO NOT MODIFY! Changes to this file will be overwritten. **/
+package ${outputPackage.get()}
+
+import com.sunnychung.lib.multiplatform.kotlite.model.LibraryModule
+
+object StdLibModuleRegistry {
+    
+    /**
+     * Get all available stdlib modules except IOLibModule.
+     * Note: IOLibModule needs special handling for output function.
+     */
+    fun getAllNonIOModules(): List<LibraryModule> = listOf(
+${moduleNames.filter { it != "IO" }.joinToString(",\n") { "        ${it}LibModule()" }}
+    )
+}
+        """.trimIndent()
+
+        File(concreteDir, "StdLibModuleRegistry.kt").writeText(registryContent)
+        println("✓ Generated ${outputPackage.get()}.StdLibModuleRegistry")
+    }
+}
+
+val generateConcreteModules = tasks.register<GenerateConcreteModulesTask>("generateConcreteModules") {
+    abstractModuleDir.set(file("build/generated/common"))
+    concreteModuleOutputDir.set(file("build/generated/concrete"))
+    outputPackage.set("com.sunnychung.lib.multiplatform.kotlite.stdlib")
+    
+    dependsOn("kotliteStdlibHeaderProcess")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    dependsOn(generateConcreteModules)
 }
 
 kotliteStdLibHeaderProcessor {
