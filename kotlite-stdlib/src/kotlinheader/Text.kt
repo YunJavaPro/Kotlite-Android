@@ -73,7 +73,7 @@ fun String.replaceRange(startIndex: Int, endIndex: Int, replacement: String): St
 fun String.reversed(): String
 fun String.single(): Char
 fun String.singleOrNull(): Char?
-//fun String.split(delimiter: String, ignoreCase: Boolean = false, limit: Int = 0): List<String>
+fun String.split(delimiter: String, ignoreCase: Boolean = false, limit: Int = 0): List<String>
 fun String.startsWith(prefix: String, ignoreCase: Boolean = false): Boolean
 fun String.substring(startIndex: Int, endIndex: Int = length): String
 fun String.substringAfter(delimiter: String, missingDelimiterValue: String = this): String
