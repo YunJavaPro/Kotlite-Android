@@ -2639,6 +2639,22 @@ open class Parser(protected val lexer: Lexer) {
             semis()
         }
         while (currentToken.type != TokenType.EOF) {
+            // 简单忽略 import 语句
+            if (isCurrentToken(TokenType.Identifier, "import")) {
+                // 跳过 import 关键字和后面的内容直到换行或分号
+                eat(TokenType.Identifier)
+                // 跳过 import 路径内容
+                while (currentToken.type != TokenType.EOF
+                    && currentToken.type != TokenType.Semicolon
+                    && currentToken.type != TokenType.NewLine) {
+                    eat(currentToken.type)
+                }
+                // 跳过可能的分号或换行
+                if (isSemi()) {
+                    semi()
+                }
+                continue
+            }
             nodes += statement()
             if (currentToken.type in setOf(TokenType.Semicolon, TokenType.NewLine)) {
                 semi()
