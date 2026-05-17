@@ -45,8 +45,13 @@ class AnyClass {
                 modifiers = setOf(FunctionModifier.open),
                 parameterTypes = emptyList(),
                 executable = exe@ { interpreter, receiver, args, typeArgs ->
+                    val stringValue = when (receiver) {
+                        null -> "null"
+                        is KotlinValueHolder<*> -> receiver.value.toString()
+                        else -> receiver.convertToString(isCallCustomFunction = false)
+                    }
                     StringValue(
-                        value = receiver?.convertToString(isCallCustomFunction = false) ?: "null",
+                        value = stringValue,
                         symbolTable = interpreter.symbolTable(),
                     )
                 }

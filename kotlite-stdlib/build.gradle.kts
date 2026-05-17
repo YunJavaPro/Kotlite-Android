@@ -15,7 +15,7 @@ kotlin {
     }
     sourceSets {
         val commonMain by getting {
-            // kotlin.srcDir("build/generated/common")
+            kotlin.srcDir("build/generated/common")
             dependencies {
                 implementation("co.touchlab:kermit:1.0.0")
                 implementation("io.github.sunny-chung:kdatetime-multiplatform:1.0.0")

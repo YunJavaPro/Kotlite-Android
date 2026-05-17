@@ -13,6 +13,25 @@ import kotlin.test.assertEquals
 
 class ListTest {
     @Test
+    fun toStringInStringTemplate() {
+        val console = StringBuilder()
+        val env = ExecutionEnvironment().apply {
+            install(object : IOLibModule() {
+                override fun outputToConsole(output: String) {
+                    console.append(output)
+                }
+            })
+            install(CollectionsLibModule())
+        }
+        val interpreter = interpreter("""
+            val list = listOf("苹果", "香蕉", "橙子")
+            println("原列表: ${'$'}list")
+        """.trimIndent(), executionEnvironment = env, isDebug = true)
+        interpreter.eval()
+        assertEquals("原列表: [苹果, 香蕉, 橙子]\n", console.toString())
+    }
+ 
+    @Test
     fun forEach() {
         val console = StringBuilder()
         val env = ExecutionEnvironment().apply {
