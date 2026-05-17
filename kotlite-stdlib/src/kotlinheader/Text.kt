@@ -30,6 +30,7 @@ fun String.firstOrNull(): Char?
 //fun <R> String.flatMapIndexed(transform: (Int, Char) -> List<R>): List<R>
 fun String.forEach(action: (Char) -> Unit)
 fun String.forEachIndexed(action: (Int, Char) -> Unit)
+operator fun String.get(index: Int): Char
 fun String.getOrElse(index: Int, defaultValue: (Int) -> Char): Char
 fun String.getOrNull(index: Int): Char?
 fun String.indexOf(string: String, startIndex: Int = 0, ignoreCase: Boolean = false): Int
