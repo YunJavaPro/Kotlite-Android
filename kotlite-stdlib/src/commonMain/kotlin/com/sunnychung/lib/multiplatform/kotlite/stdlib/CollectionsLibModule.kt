@@ -1,6 +1,7 @@
 package com.sunnychung.lib.multiplatform.kotlite.stdlib
 
 import com.sunnychung.lib.multiplatform.kotlite.model.*
+import com.sunnychung.lib.multiplatform.kotlite.stdlib.collections.*
 
 class CollectionsLibModule : AbstractCollectionsLibModule() {
     override val classes: List<ProvidedClassDefinition> = listOf(
