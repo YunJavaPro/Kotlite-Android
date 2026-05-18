@@ -63,21 +63,21 @@ abstract class GenerateConcreteModulesTask : DefaultTask() {
 
         // Generate StdLibModuleRegistry
         val registryContent = """
-/** Generated code. DO NOT MODIFY! Changes to this file will be overwritten. **/
-package ${outputPackage.get()}
-
-import com.sunnychung.lib.multiplatform.kotlite.model.LibraryModule
-
-object StdLibModuleRegistry {
-    
-    /**
-     * Get all available stdlib modules except IOLibModule.
-     * Note: IOLibModule needs special handling for output function.
-     */
-    fun getAllNonIOModules(): List<LibraryModule> = listOf(
-${moduleNames.filter { it != "IO" }.joinToString(",\n") { "        ${it}LibModule()" }}
-    )
-}
+            /** Generated code. DO NOT MODIFY! Changes to this file will be overwritten. **/
+            package ${outputPackage.get()}
+            
+            import com.sunnychung.lib.multiplatform.kotlite.model.LibraryModule
+            
+            object StdLibModuleRegistry {
+            
+                /**
+                 * Get all available stdlib modules except IOLibModule.
+                 * Note: IOLibModule needs special handling for output function.
+                 */
+                 fun getAllNonIOModules(): List<LibraryModule> = listOf(
+                    ${moduleNames.filter { it != "IO" }.joinToString(",\n") { "        ${it}LibModule()" }}
+                 )
+             }
         """.trimIndent()
 
         File(concreteDir, "StdLibModuleRegistry.kt").writeText(registryContent)
